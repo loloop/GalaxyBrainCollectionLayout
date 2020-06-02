@@ -95,6 +95,7 @@ final class GalaxySection: Section {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: GalaxyBrainCell = collectionView.dequeueReusableCell(forIndexPath: indexPath)
         cell.backgroundColor = .cyan
+        cell.text = "\(indexPath)"
         return cell
     }
 
@@ -132,6 +133,7 @@ final class SuperHeaderSection: Section {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: GalaxyBrainCell = collectionView.dequeueReusableCell(forIndexPath: indexPath)
         cell.backgroundColor = .magenta
+        cell.text = "\(indexPath)"
         return cell
     }
 
@@ -167,6 +169,7 @@ final class HeaderlessSection: Section {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: GalaxyBrainCell = collectionView.dequeueReusableCell(forIndexPath: indexPath)
         cell.backgroundColor = .green
+        cell.text = "\(indexPath)"
         return cell
     }
 
@@ -178,7 +181,35 @@ final class HeaderlessSection: Section {
         collectionView.register(GalaxyBrainCell.self)
     }
 }
-final class GalaxyBrainCell: UICollectionViewCell {}
+
+final class GalaxyBrainCell: UICollectionViewCell {
+    var text: String = "" {
+        didSet {
+            label.text = text
+        }
+    }
+
+    let label: UILabel = {
+        let v = UILabel()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.numberOfLines = 0
+        return v
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.addSubview(label)
+        addConstraints([
+            label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 final class GalaxyBrainHeader: UICollectionReusableView {
 
     var text: String = "" {
@@ -195,7 +226,7 @@ final class GalaxyBrainHeader: UICollectionReusableView {
     }()
 
     override init(frame: CGRect) {
-        super.init(frame: .zero)
+        super.init(frame: frame)
         addSubview(label)
         addConstraints([
             label.centerXAnchor.constraint(equalTo: centerXAnchor),
